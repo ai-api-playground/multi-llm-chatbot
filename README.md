@@ -137,7 +137,7 @@ jupyter notebook
 ## 📁 Project Structure
 
 ```
-llm-character-chat/
+multi-llm--chatbot/
 │
 ├── app.py                              # Streamlit web app
 ├── requirements.txt                    # Dependencies

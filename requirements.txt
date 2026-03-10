@@ -1,0 +1,5 @@
+anthropic>=0.84.0
+openai>=2.26.0
+python-dotenv>=1.0.0
+jupyter>=1.0.0
+ipywidgets>=8.0.0

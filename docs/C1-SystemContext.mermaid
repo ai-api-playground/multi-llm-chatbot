@@ -1,0 +1,23 @@
+---
+title: "C1 — System Context Diagram: Character Chatbot"
+---
+flowchart TD
+
+    User(["👤 User\n─────────────\nA person who wants to\nchat with AI-powered\nfictional characters"])
+
+    System["🎭 Character Chatbot System\n─────────────────────────────\nAllows users to have interactive\nconversations with fictional\ncharacters powered by LLMs.\nBuilt with Python & Streamlit."]
+
+    Anthropic["🟣 Anthropic Claude API\n──────────────────────\nExternal LLM service.\nProvides claude-sonnet-4-0\nfor character responses."]
+
+    OpenAI["🟢 OpenAI API\n─────────────\nExternal LLM service.\nProvides gpt-4o-mini\nfor character responses."]
+
+    User -->|"Selects character, types message,\nreads responses"| System
+    System -->|"Sends system prompt +\nconversation history\n[HTTPS/REST]"| Anthropic
+    System -->|"Sends system prompt +\nconversation history\n[HTTPS/REST]"| OpenAI
+    Anthropic -->|"Returns character\nresponse text"| System
+    OpenAI -->|"Returns character\nresponse text"| System
+
+    style User fill:#1565C0,color:#fff,stroke:#1565C0
+    style System fill:#2E7D32,color:#fff,stroke:#2E7D32
+    style Anthropic fill:#4A148C,color:#fff,stroke:#4A148C
+    style OpenAI fill:#00695C,color:#fff,stroke:#00695C

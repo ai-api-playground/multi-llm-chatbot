@@ -1,0 +1,49 @@
+---
+title: "C2 — Container Diagram: Character Chatbot System"
+---
+flowchart TD
+
+    User(["👤 User"])
+
+    subgraph System["🎭 Character Chatbot System"]
+
+        subgraph UIC["Interface Layer"]
+            ST["🌐 Streamlit Web App\n─────────────────────\nTechnology: Python + Streamlit\n─────────────────────\nProvides browser-based\nchat UI with sidebar controls,\nmodel selector, character picker,\nand side-by-side comparison view."]
+
+            JN["📓 Jupyter Notebooks\n─────────────────────\nTechnology: Python + Jupyter\n─────────────────────\nInteractive notebooks for\nexploration and demos.\nipywidgets for UI controls."]
+        end
+
+        subgraph CFG["Configuration"]
+            ENV["🔐 .env File\n──────────────────\nStores API credentials:\nANTHROPIC_API_KEY\nOPENAI_API_KEY\n──────────────────\nNever committed to Git"]
+        end
+
+        subgraph DEP["Dependencies"]
+            REQ["📦 requirements.txt\n──────────────────────\nanthropist>=0.84.0\nopenai>=2.26.0\npython-dotenv>=1.0.0\nstreamlit\nipywidgets>=8.0.0"]
+        end
+
+    end
+
+    subgraph EXT["External Systems"]
+        ANT["🟣 Anthropic Claude API\nclaude-sonnet-4-0"]
+        OAI["🟢 OpenAI API\ngpt-4o-mini"]
+    end
+
+    User -->|"Browser / Jupyter"| ST
+    User -->|"Jupyter UI"| JN
+    ENV -->|"Loaded via python-dotenv"| ST
+    ENV -->|"Loaded via python-dotenv"| JN
+    ST -->|"HTTPS API calls"| ANT
+    ST -->|"HTTPS API calls"| OAI
+    JN -->|"HTTPS API calls"| ANT
+    JN -->|"HTTPS API calls"| OAI
+
+    style System fill:#0d2137,color:#fff,stroke:#4a90d9
+    style UIC fill:#0a3d2e,color:#fff,stroke:#2ecc71
+    style CFG fill:#3d1f00,color:#fff,stroke:#f5a623
+    style DEP fill:#1a0a3d,color:#fff,stroke:#9c27b0
+    style EXT fill:#1a1a1a,color:#fff,stroke:#888
+    style ST fill:#1b4332,color:#fff,stroke:#2ecc71
+    style JN fill:#1b4332,color:#fff,stroke:#2ecc71
+    style ENV fill:#7d3c00,color:#fff,stroke:#f5a623
+    style ANT fill:#4A148C,color:#fff,stroke:#7B68EE
+    style OAI fill:#00695C,color:#fff,stroke:#2ecc71

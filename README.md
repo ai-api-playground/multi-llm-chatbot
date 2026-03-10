@@ -6,7 +6,7 @@ Chat with iconic fictional characters powered by **Anthropic Claude** and **Open
 
 ## 🚀 Live Demo
 
-👉 **[Try it here](https://your-app.streamlit.app)** ← *(replace with your Streamlit Cloud URL)*
+👉 **[Try it here] https://multi-llm-chatbot-ramzai.streamlit.app 
 
 ---
 

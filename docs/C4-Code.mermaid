@@ -1,0 +1,85 @@
+---
+title: "C4 — Code Diagram: Core Functions & Data Structures"
+---
+classDiagram
+
+    class character_personalities {
+        +Dict~str, str~ personalities
+        +str SHERLOCK_HOLMES
+        +str TONY_STARK
+        +str YODA
+        +str HERMIONE_GRANGER
+        +str GANDALF
+        +str GORDON_RAMSAY
+    }
+
+    class SessionState {
+        +List claude_history
+        +List openai_history
+        +List messages
+        +str last_character
+        +str last_model
+        +clear() void
+    }
+
+    class get_claude_reply {
+        +str system_prompt
+        +List history
+        +anthropic.Anthropic client
+        +messages_create() Response
+        +return str reply
+    }
+
+    class get_openai_reply {
+        +str system_prompt
+        +List history
+        +OpenAI client
+        +chat_completions_create() Response
+        +return str reply
+    }
+
+    class AnthropicResponse {
+        +List content
+        +content[0].text : str
+        +model : str
+        +usage.input_tokens : int
+        +usage.output_tokens : int
+    }
+
+    class OpenAIResponse {
+        +List choices
+        +choices[0].message.content : str
+        +model : str
+        +usage.total_tokens : int
+    }
+
+    class UIComponents {
+        +Dropdown character_dropdown
+        +RadioButton model_selector
+        +ChatInput user_input
+        +Button clear_chat
+        +Column claude_panel
+        +Column openai_panel
+        +render_chat_history() void
+        +on_clear_clicked() void
+    }
+
+    class AuthManager {
+        +load_dotenv() void
+        +os.getenv(ANTHROPIC_API_KEY) str
+        +os.getenv(OPENAI_API_KEY) str
+        +validate_keys() bool
+    }
+
+    UIComponents --> SessionState : reads and writes
+    UIComponents --> character_personalities : selects persona
+    UIComponents --> get_claude_reply : calls on user input
+    UIComponents --> get_openai_reply : calls on user input
+    get_claude_reply --> AnthropicResponse : receives
+    get_openai_reply --> OpenAIResponse : receives
+    get_claude_reply --> SessionState : appends to claude_history
+    get_openai_reply --> SessionState : appends to openai_history
+    AuthManager --> get_claude_reply : provides api_key
+    AuthManager --> get_openai_reply : provides api_key
+    character_personalities --> get_claude_reply : provides system_prompt
+    character_personalities --> get_openai_reply : provides system_prompt

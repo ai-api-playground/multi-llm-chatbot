@@ -1,0 +1,75 @@
+---
+title: "C3 — Component Diagram: Streamlit App (app.py)"
+---
+flowchart TD
+
+    User(["👤 User\n(via Browser)"])
+
+    subgraph APP["🌐 Streamlit App — app.py"]
+
+        subgraph UI["UI Components"]
+            SB["Sidebar\n──────────────\nCharacter dropdown\nModel radio selector\nClear chat button\nAPI key status"]
+            CI["Chat Interface\n──────────────\nst.chat_message()\nst.chat_input()\nSide-by-side columns\nSpinner / loading states"]
+        end
+
+        subgraph CE["Character Engine"]
+            CP["character_personalities\n────────────────────\nDict of 6 characters:\nSherlock, Tony Stark,\nYoda, Hermione,\nGandalf, Gordon Ramsay"]
+            PG["Prompt Generator\n────────────────────\nExtracts system prompt\nfor selected character"]
+            CP --> PG
+        end
+
+        subgraph MM["Memory Manager"]
+            SS["st.session_state\n──────────────────\nPersists across reruns"]
+            CH["claude_history[ ]\n──────────────────\nuser + assistant turns\nfor Claude only"]
+            OH["openai_history[ ]\n──────────────────\nuser + assistant turns\nfor OpenAI only"]
+            SS --> CH
+            SS --> OH
+        end
+
+        subgraph AUTH["Auth Manager"]
+            DT["python-dotenv\nload_dotenv()"]
+            EV["os.getenv()\nANTHROPIC_API_KEY\nOPENAI_API_KEY"]
+            DT --> EV
+        end
+
+        subgraph CLIENTS["API Clients"]
+            AC["🟣 Anthropic Client\n──────────────────\nanthropic.Anthropic()\nget_claude_reply()"]
+            OC["🟢 OpenAI Client\n──────────────────\nOpenAI()\nget_openai_reply()"]
+        end
+
+    end
+
+    subgraph EXT["External APIs"]
+        CAPI["🟣 Anthropic\nClaude API"]
+        OAPI["🟢 OpenAI\nGPT-4o API"]
+    end
+
+    User -->|"Interacts"| SB
+    User -->|"Sends message"| CI
+    SB -->|"Character selection"| CE
+    SB -->|"Model selection"| CLIENTS
+    CI -->|"User input"| MM
+    PG -->|"system prompt"| AC
+    PG -->|"system prompt"| OC
+    CH -->|"Full history"| AC
+    OH -->|"Full history"| OC
+    EV -->|"api_key"| AC
+    EV -->|"api_key"| OC
+    AC -->|"HTTPS"| CAPI
+    OC -->|"HTTPS"| OAPI
+    CAPI -->|"claude_reply"| MM
+    OAPI -->|"openai_reply"| MM
+    MM -->|"Updated history"| CI
+    CI -->|"Renders response"| User
+
+    style APP fill:#0d2137,color:#fff,stroke:#4a90d9
+    style UI fill:#0a3d2e,color:#fff,stroke:#2ecc71
+    style CE fill:#1a3a1a,color:#fff,stroke:#4caf50
+    style MM fill:#2d1b4e,color:#fff,stroke:#9c27b0
+    style AUTH fill:#3d1f00,color:#fff,stroke:#f5a623
+    style CLIENTS fill:#1a1a3a,color:#fff,stroke:#7B68EE
+    style EXT fill:#1a1a1a,color:#fff,stroke:#888
+    style AC fill:#4A148C,color:#fff,stroke:#7B68EE
+    style OC fill:#00695C,color:#fff,stroke:#2ecc71
+    style CAPI fill:#4A148C,color:#fff,stroke:#7B68EE
+    style OAPI fill:#00695C,color:#fff,stroke:#2ecc71

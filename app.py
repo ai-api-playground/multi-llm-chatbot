@@ -13,8 +13,16 @@ st.set_page_config(
 
 # ── Load API keys ─────────────────────────────────────────────────────────────
 load_dotenv()
-anthropic_api_key = os.getenv("ANTHROPIC_API_KEY")
-openai_api_key    = os.getenv("OPENAI_API_KEY")
+# Works both locally (.env) and on Streamlit Cloud (st.secrets)
+def get_secret(key):
+    try:
+        return st.secrets[key]          # Streamlit Cloud
+    except Exception:
+        load_dotenv()
+        return os.getenv(key)           # Local .env fallback
+
+anthropic_api_key = get_secret("ANTHROPIC_API_KEY")
+openai_api_key    = get_secret("OPENAI_API_KEY")
 
 # ── Character personalities ───────────────────────────────────────────────────
 CHARACTER_PERSONALITIES = {

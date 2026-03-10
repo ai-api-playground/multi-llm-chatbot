@@ -1,0 +1,9 @@
+[theme]
+primaryColor        = "#7B68EE"       ← purple accent (buttons, sliders)
+backgroundColor     = "#0e1117"       ← dark background
+secondaryBackgroundColor = "#1e2130"  ← sidebar background
+textColor           = "#ffffff"       ← white text
+font                = "sans serif"
+
+[server]
+headless = true                       ← needed for cloud deployment
